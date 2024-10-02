@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>index</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"
+  />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+  <video autoplay muted loop id="background-video">
+    <source src="static/istockphoto-1436216218-640_adpp_is (1).mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  
+<div class="mt-2 bg-dark border border-primary">
+  <h1 id="heading" class="text-primary text-center animate__animated animate__fadeInDown">
+    Profile TrustWorthiness Validator
+  </h1>
+</div>
+<div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark animate__animated animate__fadeInDown">
+    <div class="container-fluid">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="container-fluid d-flex animate__animated animate__fadeInDown" method="POST" action="">
+          {% csrf_token %}
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Enter Profile Name"
+            id="profile"
+            name="profile_name"
+          />
+
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</div>
+<div class="container my-2">
+  <div class="d-flex justify-content-center animate__animated animate__fadeInUp">
+    <div class="card mb-3" style="max-width: 540px; animation: slideInUp 1s;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img
+            {% comment %} src="../static/pexels-motional-studio-1081685.jpg" {% endcomment %}
+            src ={{path}}
+            class="img-fluid rounded-circle"
+            alt="profile pic"
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title animate__animated animate__fadeIn">{{profile_name}}</h5>
+            <p class="card-text animate__animated animate__fadeIn">{{full_name}}</p>
+            <div class="row mb-1">
+              <div class="col-sm-4">
+                <h6 class="card-title text-center animate__animated animate__fadeIn">posts</h6>
+                <p class="card-text text-center animate__animated animate__fadeIn">{{post_count}}</p>
+              </div>
+              <div class="col-sm-4">
+                <h6 class="card-title text-center animate__animated animate__fadeIn">followers</h6>
+                <p class="card-text text-center animate__animated animate__fadeIn">{{follower_count}}</p>
+              </div>
+              <div class="col-sm-4">
+                <h6 class="card-title text-center animate__animated animate__fadeIn">following</h6>
+                <p class="card-text text-center animate__animated animate__fadeIn">{{following_count}}</p>
+              </div>
+              <p class="card-text animate__animated animate__fadeIn">
+               {{description}}
+              </p>
+            </div>
+            <p class="card-text animate__animated animate__fadeIn">
+              {{external_links}}
+            </p>
+            <div class="row">
+              <div class="col-sm-6 border {% if private_or_public == 'Private' %}bg-warning{% else %}bg-secondary{% endif %} border-primary animate__animated animate__fadeIn">
+                  <p class="card-text text-center"><b>{{ private_or_public }}</b></p>
+              </div>
+              <div class="col-sm-6 border {% if verified == 'Verified' %}bg-info{% endif %} border-info animate__animated animate__fadeIn">
+                  <p class="card-text text-center"><b>{{ verified }}</b></p>
+              </div>
+          </div>
+          
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid animate__animated animate__fadeInUp"> 
+  <div class="bg-dark text-center animate__animated animate__fadeIn">
+    <div id="resultCircle" class="circle"></div>
+    <h2 id="resultText" class="text-primary pd-3 animate__animated animate__fadeIn">Potential {{result}} Profile</h2>
+  </div>
+  <style>
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite alternate;
+    }
+    
+    .green {
+      background-color: green;
+    }
+    
+    .red {
+      background-color: red;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1.1);
+      }
+    }
+
+    @keyframes slideInUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    #background-video {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+      background: url('../static/circle-5090539_1280.jpg') no-repeat;
+      background-size: cover;
+    }
+    
+  </style>
+  <script>
+    // Determine the result
+    const result = "{{ result }}";
+    
+    // Update the result circle and text based on the result
+    const resultCircle = document.getElementById('resultCircle');
+    const resultText = document.getElementById('resultText');
+    
+    if (result === 'Real') {
+      resultCircle.classList.add('green');
+      resultText.textContent = "Potential Real Profile";
+    } else {
+      resultCircle.classList.add('red');
+      resultText.textContent = "Potential Fake Profile";
+    }
+
+    // Add zoom in and zoom out effect to the result text
+    setInterval(() => {
+      resultText.classList.remove('animate__zoomIn');
+      resultText.classList.add('animate__zoomOut');
+    }, 2000);
+
+    setInterval(() => {
+      resultText.classList.remove('animate__zoomOut');
+      resultText.classList.add('animate__zoomIn');
+    }, 4000);
+  </script>
+</div>
+<!-- Footer start -->
+<div class="container-fluid my-5 bg-dark">
+  <footer class="text-center text-lg-start text-white">
+    <div class="container p-4 pb-0">
+      <!-- Section: Links -->
+      <section class="">
+        <!--Grid row-->
+        <div class="row">
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">Institute name</h6>
+            <p>ABES Institute of Technology Ghaziabad.</p>
+            <img src="../static/abesit.jpg" alt="abesit">
+          </div>
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">About us</h6>
+            <p><a class="text-white">Abhishek</a></p>
+            <p><a class="text-white">Arun Kumar Mishra</a></p>
+            <p><a class="text-white">Utsav Kumar Goel</a></p>
+          </div>
+
+          <hr class="w-100 clearfix d-md-none" />
+
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+            <p><i class="far fa-envelope mr-3"></i> cyberabhishek2000@gmail.com</p>
+            <p><i class="far fa-envelope mr-3"></i> arun2921csdsle003@abesit.edu.in</p>
+            <p><i class="far fa-envelope mr-3"></i> utsav2020csds055@abesit.edu.in</p>
+          </div>
+        </div>
+      </section>
+      <hr class="my-3">
+
+      <!-- Section: Copyright -->
+      <section class="p-3 pt-0">
+        <div class="row d-flex align-items-center">
+          <!-- Grid column -->
+          <div class="col-md-7 col-lg-8 text-center text-md-start">
+            <!-- Copyright -->
+            <div class="p-3">© 2024 Copyright:
+              <a class="text-white" href="#"></a>
+            </div>
+          </div>
+
+          <!-- Grid column -->
+          <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+            <!-- Social media links -->
+            <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/abhigupta02003" role="button">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/utsavgoyal17" role="button">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://www.instagram.com/arunmishra___" role="button">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/Abhishek2003-cyber" role="button">
+              <i class="fab fa-github"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/Arunmishra03" role="button">
+              <i class="fab fa-github"></i>
+            </a>
+            <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/Abhishek2003-cyber" role="button">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </footer>
+</div>
+<!-- Footer End -->
+
+</body>
+</html>
